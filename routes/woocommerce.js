@@ -11,10 +11,10 @@ router.route("/find-product").get(findProduct);
 router.route("/get-orders").get(authMiddleware, orders);
 
 //webhooks
-router.route("/create-product-wh").post((req, res) => {
-  processProduct(req.body);
-  res.send("Webhook received");
-});
+// router.route("/create-product-wh").post((req, res) => {
+//   processProduct(req.body);
+//   res.send("Webhook received");
+// });
 
 // Se comenta debido a que no se usará webhook de Woocommerce
 // router.route("/create-order-wh").post((req, res) => {
