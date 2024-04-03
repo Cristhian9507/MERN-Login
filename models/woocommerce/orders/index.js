@@ -32,6 +32,36 @@ async function getOrders(param) {
   }
 }
 
+async function getAllTaxes() {
+  try {
+    const response = await api.get(`taxes/classes`)
+      .then((response) => {
+        console.log("Response Status:", response.status);
+        console.log("Response Headers:", response.headers);
+        console.log("Response Data:", response.data);
+        console.log("Total of pages:", response.headers['x-wp-totalpages']);
+        console.log("Total of items:", response.headers['x-wp-total']);
+        return response.data;
+      })
+      .catch((error) => {
+        let errorMessage = '';
+        if (error.response && error.response.data) {
+          errorMessage = error.response.data.Message || 'Error desconocido';
+          console.log('Mensaje de error:', errorMessage);
+        } else {
+          errorMessage = error;
+          console.error('Error desconocido:', error);
+        }
+        return errorMessage;
+      });
+    return response;
+  }
+  catch (error) {
+    throw new Error('Error al obtener los impuestos: ' + error.message);
+  }
+}
+
 module.exports = {
   getOrders,
+  getAllTaxes
 };
