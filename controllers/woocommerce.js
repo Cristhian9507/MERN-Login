@@ -1,5 +1,5 @@
 const { getProducts, findProductBySku } = require("../models/woocommerce/products");
-const { getOrders } = require("../models/woocommerce/orders");
+const { getOrders, getAllTaxes } = require("../models/woocommerce/orders");
 
 
 const allProducts = async (req, res) => {
@@ -15,6 +15,16 @@ const allProducts = async (req, res) => {
 const findProduct = async (req, res) => {
   try {
     const response = await findProductBySku(req.query.sku);
+    res.status(200).json(response);
+  }
+  catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+const getTaxes = async (req, res) => {
+  try {
+    const response = await getAllTaxes();
     res.status(200).json(response);
   }
   catch (error) {
@@ -41,5 +51,6 @@ const orders = async (req, res) => {
 module.exports = {
   allProducts,
   findProduct,
-  orders
+  orders,
+  getTaxes
 };
