@@ -1,0 +1,79 @@
+[
+  {
+      "slug": "standard",
+      "name": "Tarifa estándar",
+      "_links": {
+          "collection": [
+              {
+                  "href": "https://safarideportesyhobbies.com/wp-json/wc/v3/taxes/classes"
+              }
+          ]
+      }
+  },
+  {
+      "slug": "13929_iva_0",
+      "name": "13929_IVA_0",
+      "_links": {
+          "collection": [
+              {
+                  "href": "https://safarideportesyhobbies.com/wp-json/wc/v3/taxes/classes"
+              }
+          ]
+      }
+  },
+  {
+      "slug": "5638_iva_19",
+      "name": "5638_IVA_19",
+      "_links": {
+          "collection": [
+              {
+                  "href": "https://safarideportesyhobbies.com/wp-json/wc/v3/taxes/classes"
+              }
+          ]
+      }
+  },
+  {
+      "slug": "5639_iva_5",
+      "name": "5639_IVA_5",
+      "_links": {
+          "collection": [
+              {
+                  "href": "https://safarideportesyhobbies.com/wp-json/wc/v3/taxes/classes"
+              }
+          ]
+      }
+  },
+  {
+      "slug": "5653_ipoconsumo_8",
+      "name": "5653_IPOCONSUMO_8",
+      "_links": {
+          "collection": [
+              {
+                  "href": "https://safarideportesyhobbies.com/wp-json/wc/v3/taxes/classes"
+              }
+          ]
+      }
+  },
+  {
+      "slug": "tasa-cero",
+      "name": "Tasa cero",
+      "_links": {
+          "collection": [
+              {
+                  "href": "https://safarideportesyhobbies.com/wp-json/wc/v3/taxes/classes"
+              }
+          ]
+      }
+  },
+  {
+      "slug": "tasa-reducida",
+      "name": "Tasa reducida",
+      "_links": {
+          "collection": [
+              {
+                  "href": "https://safarideportesyhobbies.com/wp-json/wc/v3/taxes/classes"
+              }
+          ]
+      }
+  }
+]
