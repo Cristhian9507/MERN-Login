@@ -10,6 +10,7 @@
   "author": "Kuzma02",
   "license": "ISC",
   "dependencies": {
+    "@cocart/cocart-rest-api": "^1.1.0",
     "@woocommerce/woocommerce-rest-api": "^1.0.1",
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
