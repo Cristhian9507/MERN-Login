@@ -1,0 +1,129 @@
+{
+  "cart_hash": "30b8a9ea32dff80646f453d9cef946aa",
+  "cart_key": "1",
+  "currency": {
+    "currency_code": "COP",
+    "currency_symbol": "$",
+    "currency_minor_unit": 0,
+    "currency_decimal_separator": ",",
+    "currency_thousand_separator": ".",
+    "currency_prefix": "$ ",
+    "currency_suffix": ""
+  },
+  "customer": {
+    "billing_address": {
+      "billing_first_name": "nombre",
+      "billing_last_name": "apellidos",
+      "billing_company": "nombre de la empresa (opcional)",
+      "billing_country": "CO",
+      "billing_address_1": "numero casa y calle",
+      "billing_address_2": "apartamento, habitacion",
+      "billing_city": "poblacion",
+      "billing_state": "CO-ANT",
+      "billing_postcode": "050001",
+      "billing_phone": "229422033",
+      "billing_email": "elperronaje@gmail.com"
+    },
+    "shipping_address": {
+      "shipping_first_name": "",
+      "shipping_last_name": "",
+      "shipping_company": "",
+      "shipping_country": "CO",
+      "shipping_address_1": "",
+      "shipping_address_2": "",
+      "shipping_city": "",
+      "shipping_state": "CO-ANT",
+      "shipping_postcode": ""
+    }
+  },
+  "items": [
+    {
+      "item_key": "362387494f6be6613daea643a7706a42",
+      "id": 2721,
+      "name": "productoincluye iva en el precio 2",
+      "title": "productoincluye iva en el precio 2",
+      "price": "27",
+      "quantity": {
+        "value": 1,
+        "min_purchase": 1,
+        "max_purchase": 5
+      },
+      "totals": {
+        "subtotal": "27370",
+        "subtotal_tax": 0,
+        "total": 27370,
+        "tax": 0
+      },
+      "slug": "producto-no-incluye-iva-en-el-precio",
+      "meta": {
+        "product_type": "simple",
+        "sku": "prueba3-nuevo",
+        "dimensions": {
+          "length": "",
+          "width": "",
+          "height": "",
+          "unit": "cm"
+        },
+        "weight": 0,
+        "variation": []
+      },
+      "backorders": "",
+      "cart_item_data": [],
+      "featured_image": "https://safarideportesyhobbies.com/wp-content/uploads/woocommerce-placeholder-800x800.png"
+    }
+  ],
+  "item_count": 1,
+  "items_weight": 0,
+  "coupons": [],
+  "needs_payment": true,
+  "needs_shipping": false,
+  "shipping": [],
+  "fees": [],
+  "taxes": [],
+  "totals": {
+    "subtotal": "27370",
+    "subtotal_tax": "0",
+    "fee_total": "0",
+    "fee_tax": "0",
+    "discount_total": "0",
+    "discount_tax": "0",
+    "shipping_total": "0",
+    "shipping_tax": "0",
+    "total": "27",
+    "total_tax": "0"
+  },
+  "removed_items": [
+    {
+      "item_key": "362387494f6be6613daea643a7706a42",
+      "id": 2721,
+      "name": "productoincluye iva en el precio 2",
+      "title": "productoincluye iva en el precio 2",
+      "price": "27",
+      "quantity": 1,
+      "totals": {
+        "subtotal": "27370",
+        "subtotal_tax": 0,
+        "total": 27370,
+        "tax": 0
+      },
+      "slug": "producto-no-incluye-iva-en-el-precio",
+      "meta": {
+        "product_type": "simple",
+        "sku": "prueba3-nuevo",
+        "dimensions": {
+          "length": "",
+          "width": "",
+          "height": "",
+          "unit": "cm"
+        },
+        "weight": 0,
+        "variation": []
+      },
+      "backorders": "",
+      "cart_item_data": [],
+      "featured_image": "https://safarideportesyhobbies.com/wp-content/uploads/woocommerce-placeholder-800x800.png"
+    }
+  ],
+  "cross_sells": [],
+  "notices": []
+}
