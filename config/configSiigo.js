@@ -35,7 +35,8 @@ siigoConnect.interceptors.request.use(async (config) => {
     await authenticate();
   }
   config.headers = {
-    'Partner-Id': 'SandboxSiigoApi'
+    'Partner-Id': 'SandboxSiigoApi',
+    'Content-Type': 'application/json'
   };
   config.headers.Authorization = `Bearer ${token}`;
 

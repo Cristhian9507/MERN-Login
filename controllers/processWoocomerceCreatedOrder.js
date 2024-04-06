@@ -9,16 +9,18 @@ const convertOrderToSiigo = (order) => {
    * customer:
    * - identification es el numero de identificacion del cliente hay que solicitarlo en la orden
    * address:
-   * - hacer mappers para los ciudades departamentos y paises
-   * reviasar que es el seller 62
-   * revisar los pagos el codigo cual corresponderia
+   * - hacer mappers para  ciudades departamentos y paises
+   * cambiar seller por el id del vendendor, debe estar en los users de siigo
+   * - pagos:
+   * revisar los pagos el codigo cual corresponderia, id el id del metodo de pago debe estar en los metodos de pago de siigo
+   * value es el total pagado.
    *
    */
 
   //sum all items prices
-  let total = 0;
+  let subTotalLine = 0;
   order.line_items.forEach((item) => {
-    total += item.price * item.quantity;
+    subTotalLine += item.price * item.quantity;
   });
 
   const date = order.date_created.split("T")[0];
@@ -62,25 +64,39 @@ const convertOrderToSiigo = (order) => {
     "payments": [
       {
         "id": "541",
-        "value": total
+        "value": subTotalLine
       }
     ]
   };
+
   // add  line items from order
+  //NOTA: todos los precios de woocomerce deben ser con impuestos
   siigoOrder.items = order.line_items.map((item) => {
     return {
       code: item.sku,
       description: item.name,
       quantity: item.quantity,
-      price: item.price
+      taxed_price: item.price,
+      taxes: [
+        {
+          id: extractTaxIdFromTaxClass(item.tax_class),
+        }
+      ]
     }
   });
   return siigoOrder;
 }
 
+const extractTaxIdFromTaxClass = (taxClass) => {
+  return taxClass.split("_")[0];
+}
+
+
 const sendOrderToSiigo = async (siigoOrder) => {
   try {
-    const responseRequest = await siigoConnect.post(`/orders`, siigoOrder);
+    const responseRequest = await siigoConnect.post(`/invoices`, siigoOrder);
+    console.log("### Orden enviada a siigo ###");
+    printJson(responseRequest.data.id);
   } catch (error) {
     console.log("### Error al enviar la orden a siigo ###");
     printJson(error.response.data);
