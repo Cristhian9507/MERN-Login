@@ -4,9 +4,15 @@ const { printJson } = require("../utils/utils");
 const taxesWoocommerce = require("../utils/siigoUtils/taxesWoocommerce.json");
 
 const convertProductToWoocommerce = async (product) => {
-  // Buscamos en el json de impuestos de Woocommerce el impuesto que corresponde al producto de Siigo
-  let taxClass = taxesWoocommerce.find(taxClass => taxClass.slug.includes(product.taxes[0].id));
-  const taxSlug = taxClass ? taxClass.slug : null;
+  let taxSlug;
+  if(product.taxes != undefined) {
+    // Buscamos en el json de impuestos de Woocommerce el impuesto que corresponde al producto de Siigo
+    let taxClass = taxesWoocommerce.find(taxClass => taxClass.slug.includes(product.taxes[0].id));
+    taxSlug = taxClass ? taxClass.slug : null;
+  } else {
+    console.log("### No se encontró impuesto para el producto ###");
+    taxSlug = null;
+  }
   // Verificamos si el producto no tiene el impuesto incluido en el precio
   if(!product.tax_included) {
     // así que le añadimos el impuesto al precio
@@ -64,52 +70,64 @@ const sendProductToWoocommerce = async (newWoocommerceProduct) => {
 
 // CREATE PRODUCT PROCESS!!!!
 const processProduct = async (product) => {
-  //1. hacer el log de toda la informacion del producto recibida en la bd
-  console.log("### Procesando producto...###");
-  printJson(product);
+  if(product.resources != undefined) {
+    //1. hacer el log de toda la informacion del producto recibida en la bd
+    console.log("### Procesando producto...###");
+    printJson(product);
 
-  //2. buscar el producto en woocommerce
-  console.log("### Va a buscar producto en WooCommerce ###");
-  const woocommerceProduct = await woocommerceProductFindBySku(product.resources[0].code);
-  if (woocommerceProduct) {
-    console.log("### Producto ya existe en WooCommerce ###");
+    //2. buscar el producto en woocommerce
+    console.log("### Va a buscar producto en WooCommerce ###");
+    const woocommerceProduct = await woocommerceProductFindBySku(product.resources[0].code);
+    if (woocommerceProduct) {
+      console.log("### Producto ya existe en WooCommerce ###");
+      return;
+    }
+
+    // //3. convertir el producto a un formato que woocommerce entienda
+    const newWoocommerceProduct = await convertProductToWoocommerce(product.resources[0]);
+    console.log("### producto convertido a Woocommerce ###");
+    printJson(newWoocommerceProduct);
+
+    //4. enviar el producto a woocommerce
+    woocommerceResponse = await sendProductToWoocommerce(newWoocommerceProduct);
+  } else {
+    printJson(product);
+    console.log("### estructura no valida, no se procesará ###");
     return;
   }
-
-  // //3. convertir el producto a un formato que woocommerce entienda
-  const newWoocommerceProduct = await convertProductToWoocommerce(product.resources[0]);
-  console.log("### producto convertido a Woocommerce ###");
-  printJson(newWoocommerceProduct);
-
-  //4. enviar el producto a woocommerce
-  woocommerceResponse = await sendProductToWoocommerce(newWoocommerceProduct);
 }
 
 // UPDATE PROCESS!!!
 const processUpdateProduct = async (product) => {
-  //1. hacer el log de toda la informacion del producto recibida en la bd
-  console.log("### Procesando producto para actualizar...###");
-  printJson(product);
+  if(product.resources != undefined) {
+    //1. hacer el log de toda la informacion del producto recibida en la bd
+    console.log("### Procesando producto para actualizar...###");
+    printJson(product);
 
-  //2. buscar el producto en woocommerce
-  console.log("### Va a buscar producto en WooCommerce ###");
-  const woocommerceProduct = await woocommerceProductFindBySku(product.resources[0].code);
-  const woocommerceProductId = woocommerceProduct != undefined ? woocommerceProduct[0].id : null;
-  if (woocommerceProductId) {
-    console.log("### Producto SI existe en WooCommerce ###");
-    console.log("### Se procederá a actualizar ###");
-    //3. convertir el producto a un formato que woocommerce entienda
-    const updateWoocommerceProduct = await convertProductToWoocommerce(product.resources[0]);
-    console.log("### producto convertido a Woocommerce ###");
-    printJson(updateWoocommerceProduct);
+    //2. buscar el producto en woocommerce
+    console.log("### Va a buscar producto en WooCommerce ###");
+    const woocommerceProduct = await woocommerceProductFindBySku(product.resources[0].code);
+    const woocommerceProductId = woocommerceProduct != undefined ? woocommerceProduct[0].id : null;
+    if (woocommerceProductId) {
+      console.log("### Producto SI existe en WooCommerce ###");
+      console.log("### Se procederá a actualizar ###");
+      //3. convertir el producto a un formato que woocommerce entienda
+      const updateWoocommerceProduct = await convertProductToWoocommerce(product.resources[0]);
+      console.log("### producto convertido a Woocommerce ###");
+      printJson(updateWoocommerceProduct);
 
-    //4. enviar el producto a woocommerce
-    woocommerceResponse = await updateProductToWoocommerce(woocommerceProductId, updateWoocommerceProduct);
-    return;
+      //4. enviar el producto a woocommerce
+      woocommerceResponse = await updateProductToWoocommerce(woocommerceProductId, updateWoocommerceProduct);
+      return;
+    } else {
+      console.log("### NO existe Producto WooCommerce ###");
+      console.log("### Se procede a gestionar producto para su creación ###");
+      await processProduct(product);
+    }
   } else {
-    console.log("### NO existe Producto WooCommerce ###");
-    console.log("### Se procede a gestionar producto para su creación ###");
-    await processProduct(product);
+    printJson(product);
+    console.log("### estructura no valida, no se procesará ###");
+    return;
   }
 }
 
@@ -159,24 +177,30 @@ const updateProductToWoocommerce = async(woocommerceProductId, changesProductWoo
 
 //STOCK PROCESS!!!
 const processUpdateStockProduct = async (product) => {
-  //1. hacer el log de toda la informacion del producto recibida en la bd
-  console.log("### Procesando producto...###");
-  printJson(product);
+  if(product.resources == undefined) {
+    //1. hacer el log de toda la informacion del producto recibida en la bd
+    console.log("### Procesando producto...###");
+    printJson(product);
 
-  //2. buscar el producto en woocommerce
-  console.log("### Va a buscar producto en WooCommerce ###");
-  const woocommerceProduct = await woocommerceProductFindBySku(product.resources[0].code);
-  const woocommerceProductId = woocommerceProduct != undefined ? woocommerceProduct[0].id : null;
-  if (woocommerceProductId) {
-    console.log("### Producto SI existe en WooCommerce ###");
-    console.log("### Se actualizará el stock ###");
-    const dataStockProduct = await convertDataToUpdateStockWoocommerce(product.resources[0]);
-    console.log("### producto convertido a Woocommerce ###");
-    woocommerceResponse = await updateStockProductToWoocommerce(woocommerceProductId, dataStockProduct);
+    //2. buscar el producto en woocommerce
+    console.log("### Va a buscar producto en WooCommerce ###");
+    const woocommerceProduct = await woocommerceProductFindBySku(product.resources[0].code);
+    const woocommerceProductId = woocommerceProduct != undefined ? woocommerceProduct[0].id : null;
+    if (woocommerceProductId) {
+      console.log("### Producto SI existe en WooCommerce ###");
+      console.log("### Se actualizará el stock ###");
+      const dataStockProduct = await convertDataToUpdateStockWoocommerce(product.resources[0]);
+      console.log("### producto convertido a Woocommerce ###");
+      woocommerceResponse = await updateStockProductToWoocommerce(woocommerceProductId, dataStockProduct);
+    } else {
+      console.log("### NO existe Producto WooCommerce ###");
+      console.log("### Se procede a gestionar producto para su creación ###");
+      await processProduct(product);
+    }
   } else {
-    console.log("### NO existe Producto WooCommerce ###");
-    console.log("### Se procede a gestionar producto para su creación ###");
-    await processProduct(product);
+    printJson(product);
+    console.log("### estructura no valida, no se procesará ###");
+    return;
   }
 }
 
