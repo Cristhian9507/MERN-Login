@@ -32,6 +32,31 @@ async function getProducts(param = false) {
   }
 }
 
+const documentsType = async (type) => {
+  try {
+    const responseRequest = await siigoConnect.get(`/document-types?type=${type}`)
+      .then((response) => {
+        return response.data;
+      })
+      .catch((error) => {
+        let errorMessage = '';
+        if (error.response && error.response.data) {
+          errorMessage = error.response.data.Message || 'Error desconocido';
+          console.log('Mensaje de error:', errorMessage);
+        } else {
+          errorMessage = error;
+          console.error('Error desconocido:', error);
+        }
+        return errorMessage;
+      });
+    return responseRequest;
+  }
+  catch (error) {
+    throw new Error('Error al tratar de traer los tipos de documentos de siigo: ' + error.message);
+  }
+}
+
 module.exports = {
   getProducts,
+  documentsType
 };

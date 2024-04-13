@@ -3,7 +3,7 @@ const router = express.Router();
 
 const { allProducts, findProduct, orders, getTaxes } = require("../controllers/woocommerce");
 const authMiddleware = require('../middleware/auth');
-const processOrder = require("../controllers/processWoocomerceCreatedOrder");
+const { processOrder, updateOrder } = require("../controllers/processWoocomerceCreatedOrder");
 const processProduct = require("../controllers/processWoocomerceCreatedProduct");
 const { verifyProduct } = require("../services/woocommerceService");
 
@@ -28,6 +28,11 @@ router.route("/item-add-cart-wh").post((req, res) => {
 //   verifyProduct(req.body);
 //   res.send("Webhook finish buy received");
 // });
+
+router.route("/update-order-wh").post((req, res) => {
+  updateOrder(req.body);
+  res.send("Webhook order updated");
+});
 
 
 module.exports = router;

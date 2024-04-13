@@ -1,10 +1,15 @@
 const axios = require('axios');
 require('dotenv').config(); // Para cargar las variables de entorno desde .env
 
+// const config = {
+//   baseURL: 'https://api.siigo.com',
+//   username: process.env.SIIGO_USERNAME,
+//   accessKey: process.env.SIIGO_ACCESS_KEY
+// };
 const config = {
   baseURL: 'https://api.siigo.com',
-  username: process.env.SIIGO_USERNAME,
-  accessKey: process.env.SIIGO_ACCESS_KEY
+  username: 'sandbox@siigoapi.com',
+  accessKey: 'NDllMzI0NmEtNjExZC00NGM3LWE3OTQtMWUyNTNlZWU0ZTM0OkosU2MwLD4xQ08='
 };
 
 let token = null;

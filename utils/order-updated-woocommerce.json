@@ -1,0 +1,136 @@
+{
+  "id": 2746,
+  "parent_id": 0,
+  "status": "pending",
+  "currency": "COP",
+  "version": "8.4.0",
+  "prices_include_tax": true,
+  "date_created": "2024-04-12T23:28:40",
+  "date_modified": "2024-04-12T23:28:40",
+  "discount_total": "0",
+  "discount_tax": "0",
+  "shipping_total": "0",
+  "shipping_tax": "0",
+  "cart_tax": "0",
+  "total": "220000",
+  "total_tax": "0",
+  "customer_id": 1,
+  "order_key": "wc_order_V43awu79P8W80",
+  "billing": {
+    "first_name": "nombre",
+    "last_name": "apellidos",
+    "company": "",
+    "address_1": "numero casa y calle",
+    "address_2": "apartamento, habitacion",
+    "city": "poblacion",
+    "state": "CO-ANT",
+    "postcode": "050001",
+    "country": "CO",
+    "email": "elperronaje@gmail.com",
+    "phone": "229422033"
+  },
+  "shipping": {
+    "first_name": "",
+    "last_name": "",
+    "company": "",
+    "address_1": "",
+    "address_2": "",
+    "city": "",
+    "state": "",
+    "postcode": "",
+    "country": "",
+    "phone": ""
+  },
+  "payment_method": "wompi",
+  "payment_method_title": "Wompi",
+  "transaction_id": "",
+  "customer_ip_address": "190.108.76.128",
+  "customer_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36 OPR/109.0.0.0",
+  "created_via": "checkout",
+  "customer_note": "",
+  "date_completed": null,
+  "date_paid": null,
+  "cart_hash": "58ef1ec52cc6a032d5998ece34dc4d9b",
+  "number": "2746",
+  "meta_data": [
+    {
+      "id": 44,
+      "key": "_billing_",
+      "value": "1116268196"
+    },
+    {
+      "id": 43,
+      "key": "_billing_tipodocumento",
+      "value": "1"
+    },
+    {
+      "id": 49,
+      "key": "billing_",
+      "value": "1116268196"
+    },
+    {
+      "id": 48,
+      "key": "billing_tipodocumento",
+      "value": "1"
+    },
+    {
+      "id": 45,
+      "key": "is_vat_exempt",
+      "value": "no"
+    }
+  ],
+  "line_items": [
+    {
+      "id": 15,
+      "name": "TERMO STANLEY 30 OZ FLIP STRAW TUMBLER",
+      "product_id": 2742,
+      "variation_id": 0,
+      "quantity": 1,
+      "tax_class": "5638_iva_19",
+      "subtotal": "220000",
+      "subtotal_tax": "0",
+      "total": "220000",
+      "total_tax": "0",
+      "taxes": [],
+      "meta_data": [],
+      "sku": "S8900",
+      "price": 220000,
+      "image": {
+        "id": "",
+        "src": ""
+      },
+      "parent_name": null
+    }
+  ],
+  "tax_lines": [],
+  "shipping_lines": [],
+  "fee_lines": [],
+  "coupon_lines": [],
+  "refunds": [],
+  "payment_url": "https://safarideportesyhobbies.com/checkout/order-pay/2746/?pay_for_order=true&key=wc_order_V43awu79P8W80",
+  "is_editable": true,
+  "needs_payment": true,
+  "needs_processing": true,
+  "date_created_gmt": "2024-04-12T21:28:40",
+  "date_modified_gmt": "2024-04-12T21:28:40",
+  "date_completed_gmt": null,
+  "date_paid_gmt": null,
+  "currency_symbol": "$",
+  "_links": {
+    "self": [
+      {
+        "href": "https://safarideportesyhobbies.com/wp-json/wc/v3/orders/2746"
+      }
+    ],
+    "collection": [
+      {
+        "href": "https://safarideportesyhobbies.com/wp-json/wc/v3/orders"
+      }
+    ],
+    "customer": [
+      {
+        "href": "https://safarideportesyhobbies.com/wp-json/wc/v3/customers/1"
+      }
+    ]
+  }
+}

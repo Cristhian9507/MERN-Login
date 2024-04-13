@@ -1,0 +1,42 @@
+{
+  "id": "77e906c6-1451-48f6-bd8d-4dbf94254266",
+  "document": {
+    "id": 2372
+  },
+  "number": 9669046807,
+  "name": "FV-1-9669046807",
+  "date": "2024-04-12",
+  "customer": {
+    "id": "7fcd0819-33fc-478d-82d4-a913b50f6022",
+    "identification": "209048401",
+    "branch_office": 0
+  },
+  "seller": 62,
+  "total": 840.34,
+  "balance": 0,
+  "observations": "2746",
+  "items": [
+    {
+      "id": "63f16b9d-241d-4fb8-8bb3-c71441d806bd",
+      "code": "Code-1",
+      "quantity": 1,
+      "price": 840.34,
+      "description": "Producto1",
+      "total": 840.34
+    }
+  ],
+  "payments": [
+    {
+      "id": 541,
+      "name": "Efectivo",
+      "value": 840.34
+    }
+  ],
+  "mail": {
+    "status": "not_sent",
+    "observations": "The invoice has not been sent by mail"
+  },
+  "metadata": {
+    "created": "2024-04-12T17:47:20.703"
+  }
+}
