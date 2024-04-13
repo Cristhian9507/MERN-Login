@@ -181,12 +181,12 @@ const updateOrder = async (order) => {
       const documentsTypeInvoice = await documentsType("FV");
       if(documentsTypeInvoice.length > 0) {
         // Si existen los tipos de documentos en siigo
-        printJson(documentsTypeInvoice);
+        // printJson(documentsTypeInvoice);
         const typeInvoice = documentsTypeInvoice.find(document => document.id === siigoOrder.document.id);
         if(typeInvoice.id != undefined) {
           // Si el tipo de documento existe en siigo
           console.log("### Tipo de documento encontrado en Siigo ###");
-          printJson(typeInvoice);
+          // printJson(typeInvoice);
           let isAnuled = false;
           if(typeInvoice.electronic_type === "ElectronicInvoice") {
             // Es una factura electronica, por ende se debe de realizar una nota credito para anularla
@@ -201,7 +201,7 @@ const updateOrder = async (order) => {
             console.log("### Orden anulada correctamente ###");
             return;
           } else {
-            console.log("### Error al anular la orden ###");
+            console.log("### Error al anular la orden o crear nota crédito ###");
             return;
           }
         } else {
