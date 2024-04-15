@@ -219,13 +219,6 @@ const updateOrder = async (order) => {
       console.log("### FIN ####");
       return;
     }
-    //2. convertir la orden a un formato que siigo entienda
-    // const siigoOrder = convertOrderToSiigo(order);
-    // console.log("### Orden convertida a Siigo ###");
-    // printJson(siigoOrder);
-
-    // //3. enviar la orden a siigo
-    // siigoResponse = await sendOrderToSiigo(siigoOrder);
   }
 }
 
