@@ -2,6 +2,9 @@ const siigoConnect = require("../config/configSiigo");
 const { printJson, printJsonShort } = require("../utils/utils");
 const { documentsType } = require("../models/siigo/index");
 const { createCreditNoteToSiigo, anulInvoiceToSiigo } = require("../services/siigoService");
+const { getSiigoStateCode } = require("./utils/stateMapper");
+
+const sellerId = 810;
 
 const convertOrderToSiigo = (order) => {
   /**Notas
@@ -10,8 +13,7 @@ const convertOrderToSiigo = (order) => {
    * customer:
    * - identification es el numero de identificacion del cliente hay que solicitarlo en la orden
    * address:
-   * - hacer mappers para  ciudades departamentos y paises
-   * cambiar seller por el id del vendendor, debe estar en los users de siigo
+   * - hacer mappers para  ciudades departamentos
    * - pagos:
    * revisar los pagos el codigo cual corresponderia, id el id del metodo de pago debe estar en los metodos de pago de siigo
    * value es el total pagado.
@@ -25,16 +27,18 @@ const convertOrderToSiigo = (order) => {
   });
 
   const date = order.date_created.split("T")[0];
+  const stateCode = getSiigoStateCode(order.billing.state);
+
 
   const siigoOrder = {
     "document": {
-      "id": 2372
+      "id": 27590
     },
     "date": date,
     "customer": {
       "person_type": "Person",
       "id_type": "13",
-      "identification": "209048401",
+      "identification": "111111111",
       "branch_office": "0",
       "name": [
         order.billing.first_name,
@@ -44,8 +48,8 @@ const convertOrderToSiigo = (order) => {
         "address": order.billing.address_1,
         "city": {
           "country_code": "Co",
-          "state_code": "11",
-          "city_code": "11001"
+          "state_code": "76",
+          "city_code": "76834"
         }
       },
       "phones": [
@@ -61,7 +65,7 @@ const convertOrderToSiigo = (order) => {
         }
       ]
     },
-    "seller": 62,
+    "seller": sellerId,
     "payments": [
       {
         "id": "541",
@@ -73,18 +77,25 @@ const convertOrderToSiigo = (order) => {
   // add  line items from order
   //NOTA: todos los precios de woocomerce deben ser con impuestos
   siigoOrder.items = order.line_items.map((item) => {
-    return {
+    commonOrder = {
       code: item.sku,
       description: item.name,
       quantity: item.quantity,
-      taxed_price: item.price,
-      taxes: [
+      price: item.price
+    };
+
+    //if the item has taxes (tax_class) add it to the order
+    if (item.tax_class) {
+      delete commonOrder.price;
+      commonOrder.taxed_price = item.price;
+      commonOrder.taxes = [
         {
           id: extractTaxIdFromTaxClass(item.tax_class),
         }
-      ]
+      ];
     }
   });
+
   return siigoOrder;
 }
 
@@ -137,17 +148,17 @@ const findSiigoOrder = async (dateIni, orderId, page = 1) => {
     const responseRequest = await requestSiigoOrder(dateIni, orderId, page);
     console.log("### respuesta de primera busqueda de orden en siigo ###");
     printJsonShort(responseRequest.data);
-    if(responseRequest.data.results.length > 0){
-      if(responseRequest.data.pagination.total_results > 0) {
+    if (responseRequest.data.results.length > 0) {
+      if (responseRequest.data.pagination.total_results > 0) {
         const orderFound = responseRequest.data.results.find(order => order.observations === orderId);
-        if(orderFound) {
+        if (orderFound) {
           return orderFound;
         } else {
           console.log("### Orden no encontrada en la pagina actual ###");
-          const totalPages = (responseRequest.data.pagination.total_results / responseRequest.data.pagination.page_size); 
-          if(totalPages > page) {
+          const totalPages = (responseRequest.data.pagination.total_results / responseRequest.data.pagination.page_size);
+          if (totalPages > page) {
             page = page + 1;
-            console.log("### Buscando en la siguiente pagina " + page + " de " +totalPages+ " ###");
+            console.log("### Buscando en la siguiente pagina " + page + " de " + totalPages + " ###");
             return findSiigoOrder(dateIni, orderId, page);
           } else {
             console.log("### Orden no encontrada en ninguna pagina ###");
@@ -164,7 +175,7 @@ const findSiigoOrder = async (dateIni, orderId, page = 1) => {
 }
 
 const updateOrder = async (order) => {
-  if(order.id != undefined && (order.status == "cancelled" || order.status == "failed" || order.status == "failed")) {
+  if (order.id != undefined && (order.status == "cancelled" || order.status == "failed" || order.status == "failed")) {
     //1. hacer el log de toda la informacion de la orden recibida en la bd
     console.log("### Leyendo actualización de orden...###");
     printJson(order);
@@ -177,18 +188,18 @@ const updateOrder = async (order) => {
     const siigoOrder = await findSiigoOrder(formattedDate, order.id.toString());
     console.log("### Respuesta de la busqueda de la orden en Siigo ###");
     printJson(siigoOrder);
-    if(siigoOrder.id != undefined) {
+    if (siigoOrder.id != undefined) {
       const documentsTypeInvoice = await documentsType("FV");
-      if(documentsTypeInvoice.length > 0) {
+      if (documentsTypeInvoice.length > 0) {
         // Si existen los tipos de documentos en siigo
         // printJson(documentsTypeInvoice);
         const typeInvoice = documentsTypeInvoice.find(document => document.id === siigoOrder.document.id);
-        if(typeInvoice.id != undefined) {
+        if (typeInvoice.id != undefined) {
           // Si el tipo de documento existe en siigo
           console.log("### Tipo de documento encontrado en Siigo ###");
           // printJson(typeInvoice);
           let isAnuled = false;
-          if(typeInvoice.electronic_type === "ElectronicInvoice") {
+          if (typeInvoice.electronic_type === "ElectronicInvoice") {
             // Es una factura electronica, por ende se debe de realizar una nota credito para anularla
             console.log("### es una factura eletrónica, por ende se debe de crear una nota crédito para anularla ###");
             isAnuled = await createCreditNoteToSiigo(siigoOrder);
@@ -197,7 +208,7 @@ const updateOrder = async (order) => {
             console.log("### es una factura no eletrónica, por ende se puede anular la FV ###");
             isAnuled = await anulInvoiceToSiigo(siigoOrder);
           }
-          if(isAnuled) {
+          if (isAnuled) {
             console.log("### Orden anulada correctamente ###");
             return;
           } else {
@@ -222,7 +233,7 @@ const updateOrder = async (order) => {
   }
 }
 
-module.exports = 
+module.exports =
 {
   processOrder,
   updateOrder
